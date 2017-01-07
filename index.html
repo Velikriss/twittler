@@ -7,21 +7,57 @@
   <body>
     <script>
 
+    var lastTweet;
+    refreshTweets = function(){
+    	var $body = $('body');
+    	for (var i = streams.home.length - 1; i > lastTweet; i--) {
+    		var tweet = streams.home[i];
+      		var $tweet = $('<div></div>');
+          	$tweet.html('@' + '<span class = "user">' + tweet.user + '</span>' + ': ' + tweet.message + " on " + formatDate(new Date().getMonth()+1, new Date().getDate(), new Date().getFullYear()) + " at " + new Date().toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1"));
+          	$tweet.on('click', '.user', function(event) {
+    			alert($(this).text());
+    		});
+    		$tweet.appendTo($body);
+    	}
+    	lastTweet = streams.home.length - 1;
+
+
+    };
+
+    formatDate = function(mm, dd, yyyy) {
+    	var formattedDate = new Date();
+
+    	if (dd < 10) {
+    		dd = '0' + dd;
+    	}
+
+    	if (mm < 10) {
+    		mm = '0' + mm;
+    	}
+
+    	formattedDate = mm+'/'+dd+'/'+yyyy;
+    	return formattedDate;
+    }
+
       $(document).ready(function(){
         var $body = $('body');
-        $body.html('');
-
         var index = streams.home.length - 1;
+        lastTweet = index;
         while(index >= 0){
           var tweet = streams.home[index];
           var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
+          $tweet.html('@' + '<span class = "user">' + tweet.user + '</span>' + ': ' + tweet.message + " on " + formatDate(new Date().getMonth()+1, new Date().getDate(), new Date().getFullYear()) + " at " + new Date().toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1"));
           $tweet.appendTo($body);
           index -= 1;
+
         }
+        setInterval(refreshTweets, 100);
+        $('.user').on('click', function(event) {
+    			alert($(this).text());
+    	});
 
       });
-
+ 
     </script>
   </body>
 </html>
