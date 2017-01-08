@@ -8,16 +8,15 @@
     <script>
 
     var lastTweet;
+    var refreshTweetsInterval;
     refreshTweets = function(){
     	var $body = $('body');
     	for (var i = streams.home.length - 1; i > lastTweet; i--) {
     		var tweet = streams.home[i];
-      		var $tweet = $('<div></div>');
-          	$tweet.html('@' + '<span class = "user">' + tweet.user + '</span>' + ': ' + tweet.message + " on " + formatDate(new Date().getMonth()+1, new Date().getDate(), new Date().getFullYear()) + " at " + new Date().toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1"));
-          	$tweet.on('click', '.user', function(event) {
-    			alert($(this).text());
-    		});
+      		var $tweet = createTweet(tweet);
+    		var $user = $(this).text();
     		$tweet.appendTo($body);
+    		$('.user').on('click', showUserTimeline);
     	}
     	lastTweet = streams.home.length - 1;
 
@@ -39,6 +38,28 @@
     	return formattedDate;
     }
 
+    createTweet = function(tweet) {
+		var $tweet = $('<div></div>');
+  		$tweet.html('@' + '<span class = "user">' + tweet.user + '</span>' + ': ' + tweet.message + " on " + formatDate(new Date().getMonth()+1, new Date().getDate(), new Date().getFullYear()) + " at " + new Date().toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1"));
+  		return $tweet;
+          		
+
+    };
+
+    showUserTimeline = function() {
+    	var $body = $('body');
+		$body.html('');
+		var $user = $(this).text();
+		var userTweets = streams.users[$user];
+		for (var i = userTweets.length - 1; i > 0; i--) {
+			var tweet = userTweets[i];
+			var $tweet = createTweet(tweet);
+			$tweet.appendTo($body);
+		}
+		clearInterval(refreshTweetsInterval);
+
+    };
+
       $(document).ready(function(){
         var $body = $('body');
         var index = streams.home.length - 1;
@@ -51,10 +72,9 @@
           index -= 1;
 
         }
-        setInterval(refreshTweets, 100);
-        $('.user').on('click', function(event) {
-    			alert($(this).text());
-    	});
+        $('.user').on('click', showUserTimeline);
+
+    	refreshTweetsInterval = setInterval(refreshTweets, 100);
 
       });
  
