@@ -41,7 +41,7 @@
     		$('.user').on('click', showUserTimeline);
     	}
     	lastTweet = streams.home.length - 1;
-    	refreshTweetsInterval = setTimeout(refreshTweets, 1000);
+    	refreshTweetsInterval = setTimeout(refreshTweets, 100);
 
     };
 
@@ -55,7 +55,7 @@
           	$tweet.removeClass('hidden');	
     	}
     	lastTweet = streams.users[currentUser].length - 1;
-    	refreshUserTweetsInterval = setTimeout(refreshUserTweets, 1000);
+    	refreshUserTweetsInterval = setTimeout(refreshUserTweets, 100);
     };
 
     formatDate = function(mm, dd, yyyy) {
@@ -98,7 +98,7 @@
           	$tweet.removeClass('hidden');
 		}
 		clearTimeout(refreshTweetsInterval);
-		refreshUserTweetsInterval = setTimeout(refreshUserTweets, 1000);
+		refreshUserTweetsInterval = setTimeout(refreshUserTweets, 100);
 
     };
 
@@ -122,7 +122,7 @@
 	        }
 	        $('.user').on('click', showUserTimeline);
 	        clearTimeout(refreshUserTweetsInterval);
-			refreshTweetsInterval = setTimeout(refreshTweets, 1000);
+			refreshTweetsInterval = setTimeout(refreshTweets, 100);
 			currentUser = "";
 			
 
