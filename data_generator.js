@@ -65,8 +65,8 @@ var writeTweet = function(message){
 
   if (!message) {
     message = "";
+    //if no message, then just post a blank space
   }
-  console.log(streams.users[visitor]);
   if (streams.users[visitor] == undefined) {
     streams.users[visitor] = [];
   }
