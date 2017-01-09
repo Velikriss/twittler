@@ -12,7 +12,6 @@ streams.users.sharksforcheap = [];
 streams.users.mracus = [];
 streams.users.douglascalhoun = [];
 window.users = Object.keys(streams.users);
-
 // utility function for adding tweets to our data structures
 var addTweet = function(newTweet){
   var username = newTweet.user;
@@ -60,10 +59,21 @@ scheduleNextTweet();
 // (note: not used by the rest of this file.)
 var writeTweet = function(message){
   if(!visitor){
+    alert('Enter a username');
     throw new Error('set the global visitor property!');
   }
+
+  if (!message) {
+    message = "";
+  }
+  console.log(streams.users[visitor]);
+  if (streams.users[visitor] == undefined) {
+    streams.users[visitor] = [];
+  }
+
   var tweet = {};
   tweet.user = visitor;
   tweet.message = message;
+  tweet.created_at = new Date();
   addTweet(tweet);
 };
